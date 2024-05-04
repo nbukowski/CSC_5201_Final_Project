@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  python:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+      - prometheus
+    volumes:
+      - ./app/static/data:/app/static/data
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_DB: mydatabase
+    ports:
+      - "5000:5000"
+    
+      
