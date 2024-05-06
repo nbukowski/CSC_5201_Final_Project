@@ -13,5 +13,20 @@ This repository contains the necessary files to build a library catalog applicat
 
 ----
 ## Installation instructions 
-- **Step 1:** Clone the repository in WSL and ensure you have Docker Desktop connected and accessible to WSL. 
-- **Step 2:** run ```docker-compose up``` - this will create the necessary containers and allow users to view each service via Docker Desktop and/or accessing localhost:5000 for actual library catalog application and/or localhost:9090 to access monitoring metrics recording each page/endpoints latency for viewing/monitoring purposes.
+- **Step 1:** Clone repository in WSL ( WSL installation: https://learn.microsoft.com/en-us/windows/wsl/install) 
+- **Step 2:** Download Docker Desktop ( Docker Desktop installation: https://www.docker.com/products/docker-desktop/) 
+- **Step 3:** run ```docker-compose up```
+      - The ```docker-compose.yml``` file will build three image containers
+          - mysql
+          - prom/prometheus
+          - final_project-python
+---
+## Use case
+Once each container is up and running you can go to your Chrome search bar and type ```localhost:5000/login```.
+
+This will lead you to a login page. 
+Currently, there are three users included for demo purposes, additional ones can only be added manually by going to ```/app/populate.db.py``` and adding a user in function ```populate_user_table()```. 
+For demo purposes, you can use any of the three default users by using user<number> as username, and password<number> as password. User 1 has already books added to their catalog.
+The user can go between two pages, a public catalog that includes 20 books for the user to select and add to their own library, as well as their personal library of their current books where they can select and drop any book of their choice. 
+
+To see current metrics go to your Chrome search bar and type ```localhost:9090/graph```. This will open up the monitoring page which uses Prometheus. There are no automatic records for viewing, instead, you must type in the <insert thing here> 
